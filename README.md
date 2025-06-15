@@ -37,10 +37,10 @@ cd multi-llm-student-assistant
 pip install -r requirements.txt
 ```
 
-##📌 Demo
+## 📌 Demo
 Soon to be deployed! Stay tuned for a hosted demo via Streamlit Community Cloud.
 
-##🛠 Tech Stack
+## 🛠 Tech Stack
 Python
 Streamlit
 Google GenerativeAI SDK

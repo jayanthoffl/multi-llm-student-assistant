@@ -41,7 +41,7 @@ pip install -r requirements.txt
 Soon to be deployed! Stay tuned for a hosted demo via Streamlit Community Cloud.
 
 ## 🛠 Tech Stack
-Python
-Streamlit
-Google GenerativeAI SDK
-OpenAI (OpenRouter endpoint)
+- Python
+- Streamlit
+- Google GenerativeAI SDK
+- OpenAI (OpenRouter endpoint)

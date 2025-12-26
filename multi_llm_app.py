@@ -62,7 +62,7 @@ def gemini_response(prompt):
 
 def help_with_code(code_question):
     prompt = f"Help me with this code or coding doubt:\n\n{code_question}"
-    return openrouter_response(prompt, model_id="deepseek/deepseek-r1-0528:free")
+    return gemini_response(prompt)
 
 def summarize_text(text):
     prompt = f"Summarize this text:\n\n{text}"
@@ -74,11 +74,11 @@ def explain_topic(topic):
 
 def create_study_plan(subject_or_goal):
     prompt = f"Make a 1-week study plan for:\n\n{subject_or_goal}"
-    return openrouter_response(prompt, model_id="google/gemini-2.0-flash-exp:free")
+    return gemini_response(prompt)
 
 def solve_math_problem(subject_or_goal):
     prompt = f"Solve this mathematical problem:\n\n{subject_or_goal}"
-    return openrouter_response(prompt, model_id="google/gemma-3-27b-it:free")
+    return gemini_response(prompt)
 
 # User Input
 task = st.selectbox("Select Task:", [

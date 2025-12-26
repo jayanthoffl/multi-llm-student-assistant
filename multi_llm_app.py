@@ -1,14 +1,18 @@
 import streamlit as st
-import google.generativeai as genai
-import openai
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
+# from google import genai
+import google.generativeai as genai
 
 # Load .env and configure API keys
 load_dotenv()
-openai.api_key = os.getenv("OPENROUTER_API_KEY")
-openai.api_base = "https://openrouter.ai/api/v1"
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+openrouter_client = OpenAI(
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1"
+)
+
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 # Streamlit Config
 st.set_page_config(
@@ -34,51 +38,55 @@ st.markdown(
 
 # Functions
 
-def openrouter_response(prompt, model_id):
+def openrouter_response(prompt):
     try:
-        response = openai.ChatCompletion.create(
-            model=model_id,
-            messages=[{"role": "user", "content": prompt}],
+        response = openrouter_client.chat.completions.create(
+            model="tngtech/deepseek-r1t2-chimera:free",
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
             temperature=0.5,
             max_tokens=1000
         )
-        return response.choices[0].message["content"]
+        return response.choices[0].message.content
     except Exception as e:
         return f"[OpenRouter Error] {e}"
 
+
 def gemini_response(prompt):
-    model = genai.GenerativeModel("gemini-1.5-flash")
     try:
+        model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(
             prompt,
-            generation_config=genai.types.GenerationConfig(
-                temperature=0.5,
-                max_output_tokens=1000
-            )
+            generation_config={
+                "temperature": 0.5,
+                "max_output_tokens": 1000
+            }
         )
         return response.text or "⚠️ No content received from Gemini."
     except Exception as e:
         return f"❌ Gemini Error: {str(e)}"
 
+
 def help_with_code(code_question):
     prompt = f"Help me with this code or coding doubt:\n\n{code_question}"
-    return gemini_response(prompt)
+    return openrouter_response(prompt)
 
 def summarize_text(text):
     prompt = f"Summarize this text:\n\n{text}"
-    return gemini_response(prompt)
+    return openrouter_response(prompt)
 
 def explain_topic(topic):
     prompt = f"Explain this topic in a detailed and easy way:\n\n{topic}"
-    return gemini_response(prompt)
+    return openrouter_response(prompt)
 
 def create_study_plan(subject_or_goal):
     prompt = f"Make a 1-week study plan for:\n\n{subject_or_goal}"
-    return gemini_response(prompt)
+    return openrouter_response(prompt)
 
 def solve_math_problem(subject_or_goal):
     prompt = f"Solve this mathematical problem:\n\n{subject_or_goal}"
-    return gemini_response(prompt)
+    return openrouter_response(prompt)
 
 # User Input
 task = st.selectbox("Select Task:", [

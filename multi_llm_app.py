@@ -6,14 +6,13 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 
 # Load .env and configure API keys
-def get_secret(key):
-    return os.getenv(key) or st.secrets.get(key)
-
+load_dotenv()
 openrouter_client = OpenAI(
-    api_key=get_secret("OPENROUTER_API_KEY"),
+    api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1"
 )
-genai.configure(api_key=get_secret("GOOGLE_API_KEY"))
+
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 # Streamlit Config
 st.set_page_config(
